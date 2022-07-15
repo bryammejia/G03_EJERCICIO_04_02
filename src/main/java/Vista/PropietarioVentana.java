@@ -227,7 +227,7 @@ public class PropietarioVentana extends javax.swing.JInternalFrame {
         this.actualizarTablaPropietario();
             JOptionPane.showMessageDialog(this,"Propietario almacenado correctamente", "ATENCION" , JOptionPane.INFORMATION_MESSAGE);
         }catch(Exception ex){
-            JOptionPane.showMessageDialog(this, "No se pudo Guardar el propietario", "ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -266,7 +266,7 @@ public class PropietarioVentana extends javax.swing.JInternalFrame {
        JOptionPane.showMessageDialog(this, "Datos Actualizados", 
                "ATENCION", JOptionPane.INFORMATION_MESSAGE);
         }catch(Exception ex){
-            JOptionPane.showMessageDialog(this, "LOS DATOS NO SON VALIDOS", "ERROR AL ACTUALIZAR PROPIETARIO", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR AL ACTUALIZAR PROPIETARIO", JOptionPane.ERROR_MESSAGE);
             
         }
     }//GEN-LAST:event_btnModificarActionPerformed

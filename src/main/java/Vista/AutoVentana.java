@@ -243,7 +243,7 @@ public class AutoVentana extends javax.swing.JInternalFrame {
         this.autoControl.modificar(args);
         JOptionPane.showMessageDialog(this, "AUTO MODIFICADO CORRECTAMENTE", "ATENCION", JOptionPane.INFORMATION_MESSAGE);
         }catch(Exception ex){
-            JOptionPane.showMessageDialog(this, "NO SE PUDO MODIFICAR EL AUTO", "ATENCION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "ATENCION", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnModificarActionPerformed
 
@@ -265,7 +265,7 @@ public class AutoVentana extends javax.swing.JInternalFrame {
         
         JOptionPane.showMessageDialog(this, "Auto almacenado con éxito","ATENCION",JOptionPane.INFORMATION_MESSAGE);
         }catch(Exception ex){
-            JOptionPane.showMessageDialog(this, "No se pudo Guardar el Auto", "ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 

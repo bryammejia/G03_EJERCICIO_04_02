@@ -237,7 +237,7 @@ public class MatriculaVentana extends javax.swing.JInternalFrame {
         this.matriculaControl.crearMatricula(args);
         JOptionPane.showMessageDialog(this, "Matricula registrada correctamente", "ATENCION",JOptionPane.INFORMATION_MESSAGE);
         }catch(Exception ex){
-            JOptionPane.showMessageDialog(this, "NO SE PUDO GUARDAR LA MATRICULA CORRECTAMENTE", "ATENCION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,ex.getMessage(), "ATENCION", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -278,7 +278,7 @@ public class MatriculaVentana extends javax.swing.JInternalFrame {
         JOptionPane.showMessageDialog(this, "Datos Actualizados",
                 "ATENCION", JOptionPane.INFORMATION_MESSAGE);
         }catch(Exception ex){
-            JOptionPane.showMessageDialog(this, "LOS DATOS NO SON VALIDOS", "ATENCION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "ATENCION", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnModificarActionPerformed
 

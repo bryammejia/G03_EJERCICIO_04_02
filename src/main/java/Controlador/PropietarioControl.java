@@ -36,7 +36,7 @@ public class PropietarioControl {
             return Integer.valueOf(numero);
         }catch(NumberFormatException e){
             throw new RuntimeException("El campo ingresaso solamente recibe "
-                    + "números");
+                    + " números");
         }catch(Exception e){
             throw new RuntimeException("Error inesperado");
         }

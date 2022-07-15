@@ -39,7 +39,7 @@ public class AutoControlador {
         try{
             return Integer.valueOf(numero);
         }catch(NumberFormatException e){
-            throw new RuntimeException("El campo ingresado solamente recibe"+"numeros");
+            throw new RuntimeException("El campo ingresado solamente recibe"+" numeros");
             
         }catch(Exception e){
             throw new RuntimeException("Error inesperado");
