@@ -3,6 +3,7 @@ package Servicio;
 
 import Modelo.Auto;
 import Modelo.Matricula;
+import Modelo.Propietario;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -13,6 +14,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -39,20 +42,58 @@ public class MatriculaServicio implements IMatriculaServicio {
     @Override
     public Matricula modificar(int codigoNuevo, Matricula matriculaNuevo) {
        var posicion = this.buscarPosicion(this.buscarPorCodigo(codigoNuevo));
-       this.listar().get(posicion).setYearMatricula(matriculaNuevo.getYearMatricula());
-       this.listar().get(posicion).setFechaExpira(matriculaNuevo.getFechaExpira());
-       this.listar().get(posicion).setPlaca(matriculaNuevo.getPlaca());
-       this.listar().get(posicion).setAuto(matriculaNuevo.getAuto());
-       this.listar().get(posicion).setPropietario(matriculaNuevo.getPropietario());
-       return matriculaNuevo;
+       try {
+            this.matriculaList=this.recuperarArchivo("c:/Progra/archivoMat.obj");
+        } catch (Exception ex) {
+            Logger.getLogger(MatriculaServicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        matriculaList.remove(posicion);
+        matriculaList.add(posicion,matriculaNuevo);
+        try {
+            this.eliminarArchivo("c:/Progra/archivoMat.obj");
+        } catch (Exception ex) {
+            Logger.getLogger(MatriculaServicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for(int i=0;i<matriculaList.size();i++){
+            Matricula matricula=matriculaList.get(i);
+         try {
+             this.almacenarEnArchivo(matricula,"c:/Progra/archivoMat.obj");
+         } catch (Exception ex) {
+             Logger.getLogger(MatriculaServicio.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        }
+        
+     
+     return matriculaNuevo;
     }
 
     @Override
     public Matricula eliminar(int codigo) {
        Matricula matricula = this.buscarPorCodigo(codigo);
-       var posicion = this.buscarPosicion(matricula);
-       this.listar().remove(posicion);
-       return matricula;
+       var posicion= this.buscarPosicion(matricula);
+        try {
+            System.out.println("Si entro al recuperar");
+            this.matriculaList=this.recuperarArchivo("c:/Progra/archivoMat.obj");
+        } catch (Exception ex) {
+            Logger.getLogger(MatriculaServicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        matriculaList.remove(posicion);
+       System.out.println(matriculaList);
+        try {
+            System.out.println("Si se elimino el archivo");
+            this.eliminarArchivo("c:/Progra/archivoMat.obj");
+        } catch (Exception ex) {
+            System.out.println("No se elimino el archivo");
+        }
+        for(int i=0;i<matriculaList.size();i++){
+            Matricula matricula2=matriculaList.get(i);
+         try {
+             this.almacenarEnArchivo(matricula2,"c:/Progra/archivoMat.obj");
+         } catch (Exception ex) {
+             System.out.println("El error esta en el for");
+         }
+        }
+        return matricula;
        
     }
 

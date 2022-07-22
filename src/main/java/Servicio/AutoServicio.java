@@ -2,6 +2,7 @@
 package Servicio;
 
 import Modelo.Auto;
+import Modelo.Propietario;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -12,6 +13,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,73 +26,84 @@ public class AutoServicio implements IAutoServicio {
 
     @Override
     public Auto crear(Auto auto) {
-        if(this.existeCodigo(auto.getCodigo())){
-            throw new RuntimeException("El código de la profesión ya existe"); 
-        }
         this.autoList.add(auto);
         try {
-            this.almacenarEnArchivo(auto, "C:/Progra/archivoAuto.obj");
+            this.almacenarEnArchivo(auto,"c:/Progra/archivoAuto.obj");
         } catch (Exception ex) {
-            throw new RuntimeException("No se puede almacenar en archivo"+ex.getMessage());
+            Logger.getLogger(AutoServicio.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return auto;
+      return auto;
     }
     
 
     @Override
     public Auto modificar(int codigoNuevo, Auto autoNuevo) {
         var posicion = this.buscarPosicion(this.buscarPorCodigo(codigoNuevo));
-        this.listar().get(posicion).setMarca(autoNuevo.getMarca());
-        this.listar().get(posicion).setColor(autoNuevo.getColor());
-        this.listar().get(posicion).setYear(autoNuevo.getYear());
-        this.listar().get(posicion).setPrecio(autoNuevo.getPrecio());
-        return autoNuevo;
+        try {
+            this.autoList=this.recuperarArchivo("c:/Progra/archivoAuto.obj");
+        } catch (Exception ex) {
+            Logger.getLogger(PropietarioServicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        autoList.remove(posicion);
+        autoList.add(posicion,autoNuevo);
+        try {
+            this.eliminarArchivo("c:/Progra/archivoAuto.obj");
+        } catch (Exception ex) {
+            Logger.getLogger(PropietarioServicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for(int i=0;i<autoList.size();i++){
+            Auto auto=autoList.get(i);
+         try {
+             this.almacenarEnArchivo(auto,"c:/Progra/archivoAuto.obj");
+         } catch (Exception ex) {
+             Logger.getLogger(AutoServicio.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        }
+        
+     
+     return autoNuevo;
+        
     }
 
     @Override
-    public Auto eliminar(int posicion) {
-      try{
-            try {
-                this.autoList=this.recuperarArchivo("C:/Progra/ArchivoAuto.obj");
-            } catch (Exception ex) {
-                System.out.println("");
-            }
-            
-            Auto auto1=autoList.get(posicion);
-            autoList.remove(posicion);
-            try{
-                this.eliminarArchivo("C:/Progra/ArchivoAuto.obj");
-                for(int i=0;i<autoList.size();i++)
-                {
-                    Auto auto2=autoList.get(i);
-                    this.almacenarEnArchivo(auto2,"C:/Progra/ArchivoAuto.obj");
-                }
-            }catch(Exception e1)
-            {
-                System.out.println("Error general");
-            }
-            
-            return auto1; 
-        }catch(NullPointerException ex)
-        {
-            throw new NullPointerException("El codigo de profesor ya existe");
-        }catch(NumberFormatException ex)
-        {
-            throw new NumberFormatException("Error en el formato");
-        }catch(RuntimeException ex)
-        {
-            throw new RuntimeException("La asignatura no existe");
+    public Auto eliminar(int codigo) {
+      Auto auto = this.buscarPorCodigo(codigo);
+        var posicion= this.buscarPosicion(auto);
+        try {
+            System.out.println("Si entro al recuperar");
+            this.autoList=this.recuperarArchivo("c:/Progra/archivoAuto.obj");
+        } catch (Exception ex) {
+            Logger.getLogger(AutoServicio.class.getName()).log(Level.SEVERE, null, ex);
         }
-      
+        autoList.remove(posicion);
+       System.out.println(autoList);
+        try {
+            System.out.println("Si se elimino el archivo");
+            this.eliminarArchivo("c:/Progra/archivoAuto.obj");
+        } catch (Exception ex) {
+            System.out.println("No se elimino el archivo");
+        }
+        for(int i=0;i<autoList.size();i++){
+            Auto auto2=autoList.get(i);
+         try {
+             this.almacenarEnArchivo(auto2,"c:/Progra/archivoAuto.obj");
+         } catch (Exception ex) {
+             System.out.println("El error esta en el for");
+         }
+        }
+        return auto;
     }
 
     @Override
     public Auto buscarPorCodigo(int codigo) {
-        for(var auto:this.autoList){
-            if(auto.getCodigo()==codigo)
-                return auto;
+        Auto auto= null;
+        for(var a:this.listar()){
+            if(codigo==a.getCodigo()){
+                auto = a;
+                break;
+            }
         }
-        throw new RuntimeException("No se encontró el código de la profesión");
+        return auto; 
     }
 
     @Override
@@ -113,6 +127,13 @@ public class AutoServicio implements IAutoServicio {
             throw new RuntimeException("No se puede recuperar datos del archivo"+ex.getMessage());
         }
         return this.autoList;
+    }
+    public boolean eliminarArchivo(String rutaArchivo) throws Exception {
+        boolean llave=false;
+        File archivo = new File(rutaArchivo);
+        archivo.delete();
+        System.out.println("Se completo la eliminacion");
+        return llave;
     }
 
     @Override
@@ -168,13 +189,7 @@ public class AutoServicio implements IAutoServicio {
         
     }
     
-    public boolean eliminarArchivo(String rutaArchivo) throws Exception {
-        boolean llave=false;
-        File archivo = new File(rutaArchivo);
-        archivo.delete();
-        return llave;
-    }
-    
+   
     private boolean existeCodigo(int codigo)
     {
         var retorno=false;
