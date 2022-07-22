@@ -1,11 +1,13 @@
 
 package Modelo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author USER
  */
-public class Matricula {
+public class Matricula implements Serializable{
     
     private int Codigo;
     private int yearMatricula;

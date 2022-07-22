@@ -1,11 +1,13 @@
 
 package Modelo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author USER
  */
-public class Auto {
+public class Auto implements Serializable {
 
     private int codigo;
     private String marca;

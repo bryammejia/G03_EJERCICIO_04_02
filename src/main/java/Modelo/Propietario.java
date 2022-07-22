@@ -1,8 +1,10 @@
 
 package Modelo;
 
+import java.io.Serializable;
 
-public class Propietario {
+
+public class Propietario implements Serializable{
     private int codigo;
     private String nombre;
     private int edad;
